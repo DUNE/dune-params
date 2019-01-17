@@ -75,7 +75,7 @@ def render(template, render, chapter_code, output, xlsfile):
     rendfunc = getattr(rendmod, rendfuncname)
     
     text = rendfunc(dat, template)
-    open(output,'w').write(text)
+    open(output,'wb').write(text.encode("UTF-8"))
 
 @cli.command("render-one")
 @click.option('-t','--template', required=True, type=click.Path(exists=True),
@@ -129,7 +129,7 @@ def render_one(template, all_template, render, output, all_output, collection, c
         kdat["rel_file"]=filename
         kdat["one_file"]=os.path.basename(filename)
         text = rendfunc(kdat, template)
-        open(filename,'w').write(text)
+        open(filename,'wb').write(text.encode("UTF-8"))
         collection_list.append(kdat)
 
     doall = all([all_template, all_output])
