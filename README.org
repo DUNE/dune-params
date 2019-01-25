@@ -9,13 +9,27 @@ More information can be found in the [[./doc/manual.org][dune-params manual]].
 
 * Installation
 
-The =dune-params= package is available from PyPI and so it is very easy to install.  There are many ways to do this but it is recommended to install to a [[https://virtualenv.pypa.io/][virtualenv]].
 
 #+BEGIN_EXAMPLE
   $ virtualenv venv
   $ source venv/bin/activate
-  $ pip install dune-params
-  $ dune-params 
+  $ git clone https://github.com/DUNE/dune-params.git
+  $ cd dune-params
+  $ python setup.py develop
+#+END_EXAMPLE
+
+** Options
+
+Python 2.7 and recent Python 3 are supported.  If you suspect a Python version related bug exists, report it.  If your default Python is version 2 and you want to use 3 you may replace the ~virtualenv~ command above with either:
+
+#+BEGIN_EXAMPLE
+  $ virtualenv -p python3 venv
+#+END_EXAMPLE
+
+or 
+
+#+BEGIN_EXAMPLE
+  $ python3 -m venv venv
 #+END_EXAMPLE
 
 * Usage
@@ -26,26 +40,12 @@ See the [[./doc/manual.org][manual]] to understand how =dune-params= works.  It 
   $ dune-params render [-r renderer] [-f my.filter.module.function] -t mytemplate -o myreport myparams.xls
 #+END_EXAMPLE
 
-* Development
 
-You may supply new render or filter modules of your own without needing to modify =dune-params= directly.  These module codes simply need to be accessible in the usual Python path.
+* TDR Specifications
 
-If you wish to develop =dune-params= directly, here is how to prepare a development environment.  Again, it's recommended that you work in a virtualenv.  
+For the DUNE TDR the ~dune-reqs~ command from this package is used to generate LaTeX files from the DUNE requirements/specifications spreadsheets.  
 
-#+BEGIN_EXAMPLE
-  $ virtualenv venv
-  $ source venv/bin/activate
-  $ git clone git remote add origin git@github.com:DUNE/dune-params.git
-  $ cd dune-params
-  $ python setup.py sdist
-  $ pip install --upgrade dist/dune-params-X.Y.Z.tar.gz
-  $ dune-params [...]
-#+END_EXAMPLE
-
-As you edit the code, repeat the =pip install= command.
-
-
-* Specifications
+Warning: the remaining details below may not fully reflect current reality.
 
 For the DUNE TDR we are extending DUNE Params to handle
 "specifications" (specs).  These are sometimes called "requirements"
