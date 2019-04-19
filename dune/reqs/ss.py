@@ -45,6 +45,9 @@ selected_schema = dict(
     refid=lambda r: int(r[0].value)
 )
 
+# "top level" get treated special compared to "chapter level"
+top_level_codes = ("SP-FD","DP-FD")
+
 def load_row(row, schema):
     '''
     Load a row into a data structure following the given schema 
@@ -84,7 +87,7 @@ def get_matches(patterns, strings):
 
     
 
-def load_sheets(book, chapter_code, top = ("SP-FD","DP-FD")):
+def load_sheets(book, chapter_code, top = top_level_codes):
     '''
     Return a dictionary mapping a canonical name to a sheet
 
@@ -116,11 +119,13 @@ def load_sheets(book, chapter_code, top = ("SP-FD","DP-FD")):
     sel_tabname = get_matches(sel_patterns, tabs)[0] # may fail to find tab
     sel_sheet = bytab[sel_tabname]
 
-    return dict(toplevel=tl_sheet,
-                code=chapter_code,
-                subsys=ss_sheet,
-                selected=sel_sheet)
-    
+    ret = dict(toplevel=tl_sheet,
+               code=chapter_code,
+               subsys=ss_sheet,
+               selected=sel_sheet)
+
+    return ret
+
 all_schema = dict(toplevel = (2, requirements_schema),
                   subsys = (2, requirements_schema),
                   selected = (1, selected_schema))
@@ -134,8 +139,13 @@ def load_book(book, chapter_code):
     for name in 'toplevel subsys selected'.split():
         skip, schema = all_schema[name]
         ret[name] = load_rows(rows(sheets[name], skip), schema)
-    # special case
-    ret['code'] = sheets['code']
+
+    # Some special case data
+    code = sheets['code']
+    ret['code'] = code
+    ret['istoplevel'] = code in top_level_codes;
+    ret['ischapter'] = code not in top_level_codes;
+
     return ret
 
 
@@ -165,5 +175,6 @@ def massage(dat):
         sstop.append(topbyssid[ssid])
     dat['sstop'] = sstop
 
+    print (dat.keys())
     return dat;
     
