@@ -103,12 +103,12 @@ def load_sheets(book, chapter_code, top = ("SP-FD","DP-FD")):
     if chapter_code in top:
         ss_sheet = tl_sheet
     else:
-        ss_patterns = ["your chapter"]
+        ss_patterns = ["your chapter", chapter_code.lower()]
         ss_tabs = get_matches(ss_patterns, tabs)
         if not ss_tabs:
-            ss_tabs = get_matches([chapter_code.lower()], tabs)
-        if not ss_tabs:
-            raise (ValueError, "bogus spreadsheet")
+            errmsg = "can not find chapter specific tab: tried %s against %s"%\
+                (str(ss_patterns), str(tabs))
+            raise ValueError(errmsg)
         ss_tabname = ss_tabs[0] # may fail to find tab
         ss_sheet = bytab[ss_tabname]
 
