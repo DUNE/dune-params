@@ -143,6 +143,11 @@ def load_book(book, chapter_code):
     # Some special case data
     code = sheets['code']
     ret['code'] = code
+    if code.startswith('SP'):
+        ret['topcode'] = 'SP-FD'
+    if code.startswith('DP'):
+        ret['topcode'] = 'DP-FD'
+        
     ret['istoplevel'] = code in top_level_codes;
     ret['ischapter'] = code not in top_level_codes;
 
